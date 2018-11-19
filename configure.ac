@@ -211,6 +211,16 @@ case "$host" in
 		libgc_threads=pthreads
 		use_sigposix=yes
 		has_dtrace=yes
+		case "$host" in
+		aarch64-*)
+			support_boehm=no
+			with_gc=sgen
+			;;
+		riscv*)
+			support_boehm=no
+			with_gc=sgen
+			;;
+		esac
 		with_sgen_default_concurrent=yes
 		;;
 	*-*-*openbsd*)
@@ -1662,7 +1672,7 @@ AC_ARG_ENABLE(extension-module, [  --enable-extension-module=LIST enable the cor
 	fi
 ], [])
 
-AM_CONDITIONAL([HAS_EXTENSION_MODULE], [test x$has_extension_module != xno])
+AM_CONDITIONAL([ENABLE_EXTENSION_MODULE], [test x$has_extension_module != xno])
 
 if test x$has_extension_module != xno ; then
 	AC_DEFINE([ENABLE_EXTENSION_MODULE], 1, [Extension module enabled])
@@ -3840,7 +3850,11 @@ if test "x$enable_llvm" = "xyes"; then
 
 	AC_SUBST(LLVM_CODEGEN_LIBS)
 	AC_SUBST(EXTERNAL_LLVM_CONFIG)
-	
+
+	if test "x$host_win32" = "xyes" && test "x$cross_compiling" = "xno" &&  test "x$internal_llvm" = "xno"; then
+		EXTERNAL_LLVM_CONFIG_WIN32=$(cygpath -m $EXTERNAL_LLVM_CONFIG)
+		AC_SUBST(EXTERNAL_LLVM_CONFIG_WIN32)
+	fi
 	AC_DEFINE(ENABLE_LLVM, 1, [Enable the LLVM back end])
 fi # ENABLE_LLVM
 
