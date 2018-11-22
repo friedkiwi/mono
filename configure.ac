@@ -48,7 +48,7 @@ MONO_VERSION_BUILD=`echo $VERSION | cut -d . -f 3`
 # There is no ordering of corlib versions, no old or new,
 # the runtime expects an exact match.
 #
-MONO_CORLIB_VERSION=0CC970F6-6F25-4218-9427-3E4C3DC8DE33
+MONO_CORLIB_VERSION=9E44EF5E-26C3-4EF6-8EE5-582372D0CA0A
 
 #
 # Put a quoted #define in config.h.
@@ -1672,7 +1672,7 @@ AC_ARG_ENABLE(extension-module, [  --enable-extension-module=LIST enable the cor
 	fi
 ], [])
 
-AM_CONDITIONAL([ENABLE_EXTENSION_MODULE], [test x$has_extension_module != xno])
+AM_CONDITIONAL([HAS_EXTENSION_MODULE], [test x$has_extension_module != xno])
 
 if test x$has_extension_module != xno ; then
 	AC_DEFINE([ENABLE_EXTENSION_MODULE], 1, [Extension module enabled])
